@@ -1,2 +1,3 @@
 # mipscripts
-Various tools for complementing MIPTools pipelines
+
+Various tools for use with MIPTools pipelines.
