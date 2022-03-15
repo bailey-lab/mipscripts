@@ -34,6 +34,7 @@ import scipy.interpolate
 #2021.10.04 added more warnings to merge
 #2021.11.20 revamped merge to be a two step process allowing for edits
 #2022.01.02 fixed a bug in the merge_sampleset that was misnaming file  
+#2022.03.15 add short form options to merge_sampleset
 
 #TODO rename write_fastq_from_mergedsheet 
 
@@ -346,21 +347,21 @@ def merge_sampleset(args):
       formatter_class=argparse.ArgumentDefaultsHelpFormatter
   )
       
-  aparser.add_argument("--set", required=True, action='append', help='sample_set to aggregate')
-  aparser.add_argument("--probe", required=True, action='append', help='probe sets to include in merge')
-  aparser.add_argument("--sheet", required=False, action="append", help=' sample sheet file paths (dir fastq must be in same dir as sheet)')
-  aparser.add_argument("--mergeon", required=False, help='fields to merge on ', default ="sample_name-sample_set-replicate")
-  aparser.add_argument("--newsheet", required=False, help='name of new merged samplesheet', default="mergedsheet.tsv")
-  aparser.add_argument("--newfastqdir", required=False, 
+  aparser.add_argument("-s", "--set", required=True, action='append', help='sample_set to aggregate')
+  aparser.add_argument("-p", "--probe", required=True, action='append', help='probe sets to include in merge')
+  aparser.add_argument("-sh", "--sheet", required=False, action="append", help=' sample sheet file paths (dir fastq must be in same dir as sheet)')
+  aparser.add_argument("-m", "--mergeon", required=False, help='fields to merge on ', default ="sample_name-sample_set-replicate")
+  aparser.add_argument("-nsh", "--newsheet", required=False, help='name of new merged samplesheet', default="mergedsheet.tsv")
+  aparser.add_argument("-nf", "--newfastqdir", required=False, 
   				help='name of new fastq directory',default="mergedfastq")
-  aparser.add_argument("--exclude" , required=False, action ="append", help = 'exclude (samples)  matching text pattern')
-  aparser.add_argument("--addcolumn" , required=False, action ="append", help = 'add unexpected column name')
+  aparser.add_argument("-e", "--exclude" , required=False, action ="append", help = 'exclude (samples)  matching text pattern')
+  aparser.add_argument("-a", "--addcolumn" , required=False, action ="append", help = 'add unexpected column name')
  
-  aparser.add_argument("--skipfastqwrite", action='store_true', help='dry run skips fastq merge/write but makes tsv')
+  aparser.add_argument("-sf", "--skipfastqwrite", action='store_true', help='dry run skips fastq merge/write but makes tsv')
   #aparser.add_argument("--ignoreoldnames", action='store_true',  help='ignore old names and include as column' )
-  aparser.add_argument("--renamereplicates",action='store_true',help='renumber the replicates based on order')
-  aparser.add_argument("--collapse", action='store_true', help='collapse to unique values in columns (not needed for downstream miptools)')
-  aparser.add_argument("--ignorereplicateredundancy", action='store_true', help='collapse multiple replicates within a samplesheet (error)')
+  aparser.add_argument("-r", "--renamereplicates",action='store_true',help='renumber the replicates based on order')
+  aparser.add_argument("-c", "--collapse", action='store_true', help='collapse to unique values in columns (not needed for downstream miptools)')
+  aparser.add_argument("-i", "--ignorereplicateredundancy", action='store_true', help='collapse multiple replicates within a samplesheet (error)')
   
   ##TODO: set default mergedsheet and fastq directory to set_probe
   
