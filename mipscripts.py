@@ -240,43 +240,46 @@ def seqrun_stats(args):
                 sampledict.append(row)
             header = dictreader.fieldnames
 
-            if not args.maingrp in header:
-                print("ERROR: --maingrp is not a field in header", header)
-                exit()
-            if args.subgrp and not args.subgrp in header:
-                print("ERROR: --subgrp is not a field in header ", header)
+        # Error if arguments are not correct
+        if not args.maingrp in header:
+            print("\nERROR: --maingrp invalid.")
+            print(f"\u2022 User entered '{args.maingrp}'.")
+            print(f"\u2022 Available options: {header}.")
+            exit()
+        if args.subgrp and not args.subgrp in header:
+            print("\nERROR: --subgrp invaluid.")
+            print(f"\u2022 User entered '{args.maingrp}'.")
+            print(f"\u2022 Available options: {header}.")
+            exit()
 
-            for row in sampledict:
-                fqname = (
-                    row["sample_name"]
-                    + "-"
-                    + row["sample_set"]
-                    + "-"
-                    + row["replicate"]
-                    + "_"
+        for row in sampledict:
+            fqname = "{}-{}-{}_".format(
+                row["sample_name"], row["sample_set"], row["replicate"]
+            )
+            fqfiles = fastqlen.keys()
+            row["readcnt"] = 0
+            fqmatchs = [f for f in fqfiles if fqname in f]
+
+            if len(fqmatchs) > 1:
+                print(
+                    "ERROR: More than one FASTQ for the sampleset rep.",
+                    fqmatchs,
+                    fqname,
                 )
-                fqfiles = fastqlen.keys()
-                row["readcnt"] = 0
-                fqmatchs = [f for f in fqfiles if fqname in f]
-                # print (fqmatchs)
-                if len(fqmatchs) > 1:
-                    print(
-                        "ERROR!  more than one fastq for sample-set-rep ",
-                        fqmatchs,
-                        fqname,
-                    )
-                    print(
-                        "   This may be because all the fastqs were not erased before"
-                    )
-                    print(
-                        "   an updated sample sheet was demultiplexed (different S###"
-                    )
-                    exit()
-                elif len(fqmatchs) == 1:
-                    row["readcnt"] = fastqlen[fqmatchs[0]]
-                groupings[row[args.maingrp]] = {}
-                if args.subgrp:
-                    groupings[row[args.maingrp]][row[args.subgrp]] = 1
+                print(
+                    "\u2022 This may be because all the fastqs were not erased before"
+                )
+                print(
+                    "  an updated sample sheet was demultiplexed (different S###)."
+                )
+                exit()
+            elif len(fqmatchs) == 1:
+                row["readcnt"] = fastqlen[fqmatchs[0]]
+
+            # Create groupings
+            groupings[row[args.maingrp]] = {}
+            if args.subgrp:
+                groupings[row[args.maingrp]][row[args.subgrp]] = 1
 
         print("CREATING READCNT APPEND SAMPLESHEET")
         header.append("readcnt")
