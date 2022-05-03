@@ -2,7 +2,7 @@
 
 __version__ = "v0.3.0.9000"
 
-import argparse 
+import argparse
 import re
 import os
 import os.path
@@ -101,6 +101,7 @@ global_samples_tsv_oldnames = {
 #  MAIN        ####################################################
 ###################################################################
 
+
 def main(args):
     """Main allows selection of the main subcommand (aka function).
     Each subcommand launches a separate function. The pydoc subcommand
@@ -157,6 +158,7 @@ def main(args):
         sys.exit(-1)
     sys.exit(0)
 
+
 # ------------------------------------------------------------------------------
 ###############################################################################
 ####  MERGE FASTQs and SAMPLESHEET for MIPSET  ################################
@@ -172,6 +174,7 @@ subcommands["seqrun_stats"] = {
     "shortDesc": shortDescText,
     "longDesc": longDescText,
 }
+
 
 def seqrun_stats(args):
     """commandline routine to examine a sequencing run and determin statistics for performance."""
@@ -198,11 +201,9 @@ def seqrun_stats(args):
     )
 
     args = aparser.parse_args(args=args)
-    print(args)
-    print("PROCESSING samplesheet.")
     for samplesheet in args.samplesheet:
         samplesetnum = collections.Counter()
-        print("###########FASTQS / READS #################")
+        print("########### FASTQS / READS #################")
         fastqdir = os.path.dirname(samplesheet) + "/fastq"
         fastqs = os.listdir(fastqdir)
         groupings = {}
@@ -230,17 +231,15 @@ def seqrun_stats(args):
                 fastqlen[row[0]] = int(row[1])
         print("FASTQ R1 #s", len(fastqlen))
 
+        # Load the table into memory for fast retrieval
         sampledict = []
         header = []
         with open(samplesheet) as samplefile:
-            ## load the table into memory for fast retrieval ###
             dictreader = csv.DictReader(samplefile, delimiter="\t")
-
             for row in dictreader:
                 sampledict.append(row)
-                # print (row)
             header = dictreader.fieldnames
-            # print (header)
+
             if not args.maingrp in header:
                 print("ERROR: --maingrp is not a field in header", header)
                 exit()
@@ -296,11 +295,12 @@ def seqrun_stats(args):
                 fastqlen["Undetermined_S0_R1_001.fastq.gz"],
             )
 
-        print("SAMPLE GROUPINGS AND # SAMPLES: ")
-        print(groupings)
+        print(f"SAMPLE GROUPINGS AND # SAMPLES: {groupings}")
+        
         exit()
+        
+        # THIS CODE DOES NOT RUN AS THERE IS NO SAMPLESET VARIABLE DEFINED
         for sampleset in list(samplesetnum.keys()):
-            # print (sampleset)
             fqwithreads = len(samplereads.values())
             total_reads = sum(samplereads.values())
             mean_reads = int(total_reads / fqwithreads)
@@ -321,6 +321,7 @@ def seqrun_stats(args):
                 "median is 50%",
             )
             # print (samplereads)
+
 
 #######################################################################3
 #######################################################################3
@@ -424,6 +425,7 @@ def merge_sampleset_write_fastq(args):
                     print("Skip bad fastqs with --skipbadfastqs")
                     exit(1)
 
+
 #######################################################################3
 #######################################################################3
 #######################################################################3
@@ -442,6 +444,7 @@ subcommands["merge_sampleset"] = {
     "shortDesc": shortDescText,
     "longDesc": longDescText,
 }
+
 
 def merge_sampleset(args):
     """commandline routine to merge sequencing runs and mip captures for one or a few samplesets and probesets.
@@ -846,6 +849,7 @@ def merge_sampleset(args):
                     item[f] = ",".join(item[f])
                 row.append(item[f])
             tsv_writer.writerow(row)
+
 
 ##########################################
 ##########################################
