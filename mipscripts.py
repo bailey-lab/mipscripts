@@ -257,7 +257,7 @@ def seqrun_stats(args):
                 row["sample_name"], row["sample_set"], row["replicate"]
             )
             fqfiles = fastqlen.keys()
-            row["readcnt"] = 0
+            row["Read Count"] = 0
             fqmatchs = [f for f in fqfiles if fqname in f]
 
             if len(fqmatchs) > 1:
@@ -274,16 +274,18 @@ def seqrun_stats(args):
                 )
                 exit()
             elif len(fqmatchs) == 1:
-                row["readcnt"] = fastqlen[fqmatchs[0]]
+                row["Read Count"] = fastqlen[fqmatchs[0]]
 
             # Create groupings
             groupings[row[args.maingrp]] = {}
             if args.subgrp:
                 groupings[row[args.maingrp]][row[args.subgrp]] = 1
 
-        print("CREATING READCNT APPEND SAMPLESHEET")
-        header.append("readcnt")
-        with open(samplesheet + "_readcnt.tsv", mode="wt") as samplesheetout:
+        # Create updated samplesheet
+        print("Creating an updated samplesheet with read counts.")
+        sheet_root = os.path.splitext(samplesheet)[0]
+        with open(f"{sheet_root}_readcnt.tsv", mode="wt") as samplesheetout:
+            header.append("Read Count")
             dictwriter = csv.DictWriter(
                 samplesheetout, delimiter="\t", fieldnames=header
             )
