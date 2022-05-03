@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
-VERSION = 0.02_20220130
-# standard modules
+__version__ = "v0.3.0.9000"
+
 import argparse 
 import re
 import os
@@ -17,18 +17,9 @@ import csv
 import gzip
 import collections
 from collections import defaultdict, Counter, OrderedDict
-# from collections import namedtuple
-
-# key science modules
 import numpy
 import scipy
-
-# import numpy.string_
-# import csv
-## key bio python modules
-
 import scipy.interpolate
-
 
 ###################################################################
 # 2021.10.04 added more warnings to merge
@@ -131,7 +122,7 @@ def main(args):
         if args[0] in ["help", "--help", "-help"]:
             verbosity = "longDesc"
         program_name = os.path.basename(__file__)
-        print("VERSION: ", VERSION)
+        print("VERSION:", __version__)
         print("USAGE:", program_name, "[-h] subcommand [suboptions]")
         print("DESCRIPTION: various scripts complementing MIPTools pipelines")
         print("SUBCOMMANDS:")
@@ -349,7 +340,7 @@ subcommands["merge_sampleset_write_fastq"] = {
 def merge_sampleset_write_fastq(args):
     aparser = argparse.ArgumentParser(
         prog=os.path.basename(__file__) + " merge_sampleset",
-        description="allows for creation of fastqs after editing of  mergedsheet.tsv from a merge_sampleset --skipfastqwrite",
+        description="allows for creation of fastqs after editing of mergedsheet.tsv from a merge_sampleset --skipfastqwrite",
         epilog="Note: simply downloads fastqs in the fastq column using sample_name-sample_set-replicate",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
@@ -443,7 +434,7 @@ longDescText = """This subprogram pulls sampleset(s) from multiple samplesheets
 and merge the R1 and R2 fastq records based on defined criteria.  It is best to 
 run one sampleset at a time.  Please use --skipfastqwrite to test your merge before
 allowing the slower process of writing the merged fastqs.   Also, if you need to manipulate/edit
-the tsv file you can create the merged fastqs subsequently from the editted version using
+the tsv file you can create the merged fastqs subsequently from the edited version using
 merge_sampleset_write_fastqs.
 
 """
@@ -458,7 +449,7 @@ def merge_sampleset(args):
     """
     aparser = argparse.ArgumentParser(
         prog=os.path.basename(__file__) + " merge_sampleset",
-        description="allows for flexible merging: preferable to analzye one sampleset by one probeset",
+        description="allows for flexible merging: preferable to analyze one sampleset by one probeset",
         epilog="Note: for output recommend using unique name for merged sheet based on set/probe/and other parameters",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
@@ -522,7 +513,7 @@ def merge_sampleset(args):
     aparser.add_argument(
         "--collapse",
         action="store_true",
-        help="collapse to unique values in columns (not needed for downstream miptools)",
+        help="collapse to unique values in columns (not needed for downstream MIPTools)",
     )
     aparser.add_argument(
         "--ignorereplicateredundancy",
@@ -683,7 +674,7 @@ def merge_sampleset(args):
     for mkey in sorted(merged):
         mergeset = [i for i in total_samples if i["mergeon"] == mkey]
         count += 1
-        # p#rint (count, mkey, "records:",len(mergeset))
+        # print (count, mkey, "records:",len(mergeset))
         mergeditem = None
         name = None
         ### create a merge record from first one and add the others ###
@@ -759,7 +750,7 @@ def merge_sampleset(args):
                 continue
             elif (len(pair) % 2) == 0:  # 2,4,6,8
                 # expectation is each replicate record has pair of fastqs (R1 & R2)
-                # potential to have more than one replicate in a sequencing run but that is wierd
+                # potential to have more than one replicate in a sequencing run but that is weird
                 # print (pair)
                 if len(pair) > 2:
                     if args.ignorereplicateredundancy:
@@ -789,7 +780,7 @@ def merge_sampleset(args):
 
                 if (
                     not args.skipfastqwrite
-                ):  # this skips lengthy process of writin
+                ):  # this skips lengthy process of writing
                     print(
                         "...",
                         mergeditem["mergeon"],
@@ -824,7 +815,7 @@ def merge_sampleset(args):
                 print(" could a R1 or R2 fastq file been deleted???")
                 exit(1)
             writeoperator = " >> "  # now appending
-        ### make fields nonredudnant (always make probeset)
+        ### make fields non-redundant (always make probeset)
         mergeditem["fastq"] = [
             fq for sublist in mergeditem["fastq"] for fq in sublist
         ]
@@ -864,11 +855,9 @@ def merge_sampleset(args):
 # -----------------------------------------
 # main is left to the bottom so that global variables can be populated
 if __name__ == "__main__":
-    print(
-        "SYS VERSION",
-    )
+    print("SYS VERSION")
     print(sys.version)
-    print("WORKING DIRECTORY", os.getcwd())
+    print("WORKING DIRECTORY:", os.getcwd())
     print("COMMAND:")
     print(" ".join(sys.argv))
     if len(sys.argv) == 1:
