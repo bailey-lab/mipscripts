@@ -20,6 +20,7 @@ from collections import defaultdict, Counter, OrderedDict
 import numpy
 import scipy
 import scipy.interpolate
+from alive_progress import alive_it
 
 ###################################################################
 # 2021.10.04 added more warnings to merge
@@ -209,15 +210,16 @@ def seqrun_stats(args):
         fqss = [f for f in fastqs if "_R1_" in f]
 
         # Count the number of fastq reads in each fastq file
-        print("Counting the number of FASTQ reads.")
         fastqlen = {}
-        for fq in fqss:
+        bar = alive_it(fqss)
+        for fq in bar:
             reads = 0
             with gzip.open(fastqdir + "/" + fq, mode="rt") as f:
                 for line in f:
                     if line.startswith("@"):
                         reads += 1
             fastqlen[fq] = reads
+            bar.title("Counting the number of FASTQ reads")
 
         # Load the table into memory for fast retrieval
         sampledict = []
