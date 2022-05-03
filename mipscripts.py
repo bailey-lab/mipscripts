@@ -206,30 +206,18 @@ def seqrun_stats(args):
         print("########### FASTQS / READS #################")
         fastqdir = os.path.dirname(samplesheet) + "/fastq"
         fastqs = os.listdir(fastqdir)
-        groupings = {}
         fqss = [f for f in fastqs if "_R1_" in f]
-        readcountfile = fastqdir + "_R1.readcount"
-        if not os.path.exists(readcountfile):
-            print("Creating readcountfile (" + readcountfile + ")")
-            with open(readcountfile, mode="wt") as outfile:
-                # count=0
-                for fq in fqss:
-                    fqreads = 0
-                    with gzip.open(fastqdir + "/" + fq, mode="rt") as f:
-                        for line in f:
-                            if line.startswith("@"):
-                                fqreads += 1
-                    # count+=1
-                    # if count==10:
-                    #    break
-                    outfile.write(fq + "\t" + str(fqreads) + "\n")
-                    print(fq, fqreads)
+
+        # Count the number of fastq reads in each fastq file
+        print("Counting the number of FASTQ reads.")
         fastqlen = {}
-        with open(readcountfile, mode="rt") as infile:
-            csvreader = csv.reader(infile, delimiter="\t")
-            for row in csvreader:
-                fastqlen[row[0]] = int(row[1])
-        print("FASTQ R1 #s", len(fastqlen))
+        for fq in fqss:
+            reads = 0
+            with gzip.open(fastqdir + "/" + fq, mode="rt") as f:
+                for line in f:
+                    if line.startswith("@"):
+                        reads += 1
+            fastqlen[fq] = reads
 
         # Load the table into memory for fast retrieval
         sampledict = []
@@ -277,6 +265,7 @@ def seqrun_stats(args):
                 row["Read Count"] = fastqlen[fqmatchs[0]]
 
             # Create groupings
+            groupings = {}
             groupings[row[args.maingrp]] = {}
             if args.subgrp:
                 groupings[row[args.maingrp]][row[args.subgrp]] = 1
