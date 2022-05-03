@@ -299,11 +299,8 @@ def seqrun_stats(args):
                 "Undetermined reads from demultipelxing",
                 fastqlen["Undetermined_S0_R1_001.fastq.gz"],
             )
-
         print(f"SAMPLE GROUPINGS AND # SAMPLES: {groupings}")
-        
-        exit()
-        
+                
         # THIS CODE DOES NOT RUN AS THERE IS NO SAMPLESET VARIABLE DEFINED
         for sampleset in list(samplesetnum.keys()):
             fqwithreads = len(samplereads.values())
