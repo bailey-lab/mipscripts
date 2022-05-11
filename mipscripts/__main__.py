@@ -1,5 +1,3 @@
-#!/usr/bin/python3
-
 __version__ = "v0.3.0.9000"
 
 import argparse
@@ -123,9 +121,8 @@ def main(args):
         verbosity = "shortDesc"
         if args[0] in ["help", "--help", "-help"]:
             verbosity = "longDesc"
-        program_name = os.path.basename(__file__)
         print("VERSION:", __version__)
-        print("USAGE:", program_name, "[-h] subcommand [suboptions]")
+        print("USAGE: python3 -m mipscripts [-h] subcommand [suboptions]")
         print("DESCRIPTION: various scripts complementing MIPTools pipelines")
         print("SUBCOMMANDS:")
         # tw=TextWrap()
@@ -137,24 +134,21 @@ def main(args):
                 print(
                     textwrap.fill(
                         text,
-                        77,
+                        80,
                         initial_indent="",
                         subsequent_indent="         ",
                     )
                 )
         print("HELP:")
-        print("pydoc      detailed documentation of program structure")
         print("-h/-help   short / long  subcommand descriptions")
-        print("For specific options:", program_name, "[subcommand] --help")
-    elif args[0] == "--pydoc":
-        os.system("pydoc " + os.path.abspath(__file__))
+        print("For specific options: python3 -m mipscripts [subcommand] --help")
     elif args[0] in subcommands.keys():
         globals()[args[0]](args[1:])
     else:
         print(
-            "unknown subcommand ("
+            "Unknown subcommand ("
             + args[0]
-            + ") use -h for list of subcommands!"
+            + ") use -h for the list of subcommands!"
         )
         sys.exit(-1)
     sys.exit(0)
@@ -855,8 +849,6 @@ if __name__ == "__main__":
     print("SYS VERSION")
     print(sys.version)
     print("WORKING DIRECTORY:", os.getcwd())
-    print("COMMAND:")
-    print(" ".join(sys.argv))
     if len(sys.argv) == 1:
         sys.argv.append("--help")  # if no command then it is a cry for help
     main(sys.argv[1:])
