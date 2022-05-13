@@ -1,4 +1,4 @@
-__version__ = "v0.3.0.9000"
+__version__ = "v0.3.1"
 
 import argparse
 import re
