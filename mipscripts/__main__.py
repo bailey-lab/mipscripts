@@ -20,6 +20,8 @@ import scipy
 import scipy.interpolate
 from alive_progress import alive_it
 
+from .utils import *
+
 ###################################################################
 # 2021.10.04 added more warnings to merge
 # 2021.11.20 revamped merge to be a two step process allowing for edits
