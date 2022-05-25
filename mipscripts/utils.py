@@ -4,6 +4,7 @@ import os
 import re
 from string import punctuation, whitespace
 
+
 def header_to_snake_case(path, overwrite=True):
     """Converts header column names of a file to snake case.
 
@@ -45,12 +46,12 @@ def to_snake_case(string):
     # Convert whitespace and punctuation to underscore
     regex_punc = re.compile(f"[{whitespace}{re.escape(punctuation)}]")
     string = re.sub(regex_punc, "_", string)
-    
+
     # Add underscore before capitalized letters
     string = re.sub(r"(?<!^)(?=[A-Z])", "_", string)
-    
+
     # Convert multiple underscores to one underscore
     string = re.sub("_+", "_", string)
-    
+
     # Lowercase everything
-    return(string.lower())
+    return string.lower()
