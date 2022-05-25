@@ -196,9 +196,12 @@ def seqrun_stats(args):
     aparser.add_argument(
         "--subgrp", required=False, help="sub grouping for stats"
     )
-
     args = aparser.parse_args(args=args)
+
     for samplesheet in args.samplesheet:
+        # Convert header to snake case
+        header_to_snake_case(path=samplesheet, overwrite=True)
+
         samplesetnum = collections.Counter()
         print("########### FASTQS / READS #################")
         fastqdir = os.path.dirname(samplesheet) + "/fastq"
@@ -243,7 +246,7 @@ def seqrun_stats(args):
                 row["sample_name"], row["sample_set"], row["replicate"]
             )
             fqfiles = fastqlen.keys()
-            row["Read Count"] = 0
+            row["read_count"] = 0
             fqmatchs = [f for f in fqfiles if fqname in f]
 
             if len(fqmatchs) > 1:
@@ -260,7 +263,7 @@ def seqrun_stats(args):
                 )
                 exit()
             elif len(fqmatchs) == 1:
-                row["Read Count"] = fastqlen[fqmatchs[0]]
+                row["read_count"] = fastqlen[fqmatchs[0]]
 
             # Create groupings
             groupings = {}
@@ -272,7 +275,7 @@ def seqrun_stats(args):
         print("Creating an updated samplesheet with read counts.")
         sheet_root = os.path.splitext(samplesheet)[0]
         with open(f"{sheet_root}_readcnt.tsv", mode="wt") as samplesheetout:
-            header.append("Read Count")
+            header.append("read_count")
             dictwriter = csv.DictWriter(
                 samplesheetout, delimiter="\t", fieldnames=header
             )
@@ -519,6 +522,10 @@ def merge_sampleset(args):
     mergeonfields = args.mergeon.split("-")
     if args.addcolumn == None:  # this should be handled by argparse but not!
         args.addcolumn = []
+
+    # Convert header to snake case
+    for f in args.sheet:
+        header_to_snake_case(path=f, overwrite=True)
 
     total_samples = []
     merged = {}

@@ -1,5 +1,6 @@
 about-time==3.1.1
 alive-progress==2.4.1
+attrs==21.4.0
 bleach==5.0.0
 build==0.7.0
 certifi==2021.10.8
@@ -9,13 +10,17 @@ docutils==0.18.1
 grapheme==0.6.0
 idna==3.3
 importlib-metadata==4.11.3
+iniconfig==1.1.1
 keyring==23.5.0
 numpy==1.22.3
 packaging==21.3
 pep517==0.12.0
 pkginfo==1.8.2
+pluggy==1.0.0
+py==1.11.0
 Pygments==2.12.0
 pyparsing==3.0.8
+pytest==7.1.2
 readme-renderer==35.0
 requests==2.27.1
 requests-toolbelt==0.9.1
