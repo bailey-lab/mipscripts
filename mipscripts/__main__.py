@@ -247,7 +247,10 @@ def seqrun_stats(args):
             )
             fqfiles = fastqlen.keys()
             row["read_count"] = 0
-            fqmatchs = [f for f in fqfiles if fqname in f]
+
+            # Use regex to check if the fastq name appears multiple times
+            regex = re.compile("^" + fqname)
+            fqmatchs = list(filter(regex.match, fqfiles))
 
             if len(fqmatchs) > 1:
                 print(

@@ -2,8 +2,11 @@
 
 ## mipscripts (development version)
 
+- Fix check to see if FASTQ names are the duplicated. Previously, similar names
+  would occasionally trigger an error. Only identical names should trigger an
+  error ([#2](https://github.com/bailey-lab/mipscripts/issues/2)).
 - Ensure standard column names by converting names to snake case
-  ([#3](https://github.com/bailey-lab/mipscripts/issues/3))
+  ([#3](https://github.com/bailey-lab/mipscripts/issues/3)).
 
 ## mipscripts 0.3.2
 
