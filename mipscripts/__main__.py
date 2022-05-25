@@ -210,7 +210,7 @@ def seqrun_stats(args):
         bar = alive_it(fqss)
         for fq in bar:
             reads = 0
-            with gzip.open(fastqdir + "/" + fq, mode="rt") as f:
+            with gzip.open(f"{fastqdir}/{fq}", mode="rt") as f:
                 for line in f:
                     if line.startswith("@"):
                         reads += 1
@@ -287,7 +287,7 @@ def seqrun_stats(args):
                 fastqlen["Undetermined_S0_R1_001.fastq.gz"],
             )
         print(f"SAMPLE GROUPINGS AND # SAMPLES: {groupings}")
-                
+
         # THIS CODE DOES NOT RUN AS THERE IS NO SAMPLESET VARIABLE DEFINED
         for sampleset in list(samplesetnum.keys()):
             fqwithreads = len(samplereads.values())
@@ -517,33 +517,29 @@ def merge_sampleset(args):
 
     args = aparser.parse_args(args=args)
     mergeonfields = args.mergeon.split("-")
-    print(args)
     if args.addcolumn == None:  # this should be handled by argparse but not!
         args.addcolumn = []
 
     total_samples = []
     merged = {}
     # replicate={}
-    header = global_samples_tsv_header[:]  # copy this as it will be modified
+    header = global_samples_tsv_header[:]  # copy, modify
     header_optional = global_samples_tsv_header_optional[
         :
-    ]  # copy but shouldn't modify
-    headers_to_rename = global_samples_tsv_oldnames
-    # this will not modify
+    ]  # copy, don't modify
+    headers_to_rename = global_samples_tsv_oldnames  # don't modify
 
     print("CREATING and CLEANING NEW FASTQ DIR:", args.newfastqdir)
     if len(args.newfastqdir) > 0:
         os.system("mkdir " + args.newfastqdir)
-        os.system(
-            "rm  " + args.newfastqdir + "/*"
-        )  # too lazy to check if they exist
+        os.system(f"rm {args.newfastqdir}/*")  # too lazy to check if exist
     else:
-        print("ERROR: bad directory name (" + args.newfastqdir + ")")
+        print(f"ERROR: bad directory name ({args.newfastqdir})")
         exit()
 
     print("PROCESSING SAMPLE SHEETS...")
     for thefile in args.sheet:
-        print("LOADING FASTQ DIR", thefile + "...")
+        print(f"LOADING FASTQ DIR {thefile} ...")
         print(header)
 
         fastqdir = os.path.dirname(thefile) + "/fastq"
@@ -565,11 +561,8 @@ def merge_sampleset(args):
                         item.pop(oldname)
                         if items_total == 0:
                             print(
-                                "... ... RENAMED old name ",
-                                oldname,
-                                "changed to ",
-                                headers_to_rename[oldname],
-                            )
+                                "... ... RENAMED old name '{}' to '{}'"
+                            ).format(oldname, headers_to_rename[oldname])
                 if items_total == 0:
                     # process the headerline to see what headers are present
                     # determine if we need to add another line to current header.
