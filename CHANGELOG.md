@@ -2,6 +2,8 @@
 
 ## mipscripts (development version)
 
+- Throw error if sample sheet column names are duplicated
+  ([#4](https://github.com/bailey-lab/mipscripts/issues/4)).
 - Fix check to see if FASTQ names are the duplicated. Previously, similar names
   would occasionally trigger an error. Only identical names should trigger an
   error ([#2](https://github.com/bailey-lab/mipscripts/issues/2)).

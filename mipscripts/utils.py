@@ -22,6 +22,13 @@ def header_to_snake_case(path, overwrite=True):
         for row in file_content:
             data.append(row)
 
+    # Check if there are duplicate column names
+    duplicate = [k for k, v in Counter(header).items() if v > 1]
+    if len(duplicate) > 0:
+        print("\nERROR: Header has duplicate columns.")
+        print(f"\u2022 Duplicate columns: '{duplicate}'.")
+        exit()
+
     outfile = path if overwrite else "_fix".join(os.path.splitext(path))
     with open(outfile, mode="w") as file:
         file_content = csv.writer(file, delimiter="\t")
