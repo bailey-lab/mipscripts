@@ -1,8 +1,11 @@
+from collections import Counter
 import csv
 import os
+import re
+from string import punctuation, whitespace
 
-def convert_header_snakecase(path, overwrite=False):
-    """Converts header column names of a file to snakecase.
+def header_to_snake_case(path, overwrite=True):
+    """Converts header column names of a file to snake case.
 
     Args:
         path (str): The path to the file.
@@ -13,13 +16,34 @@ def convert_header_snakecase(path, overwrite=False):
     with open(path) as file:
         file_content = csv.reader(file, delimiter="\t")
         header = next(file_content)
-        header = [col.lower().replace(' ', '_') for col in header]
+        header = [to_snake_case(col) for col in header]
 
         data = []
-        for row in file_content: data.append(row)
+        for row in file_content:
+            data.append(row)
 
     outfile = path if overwrite else "_fix".join(os.path.splitext(path))
     with open(outfile, mode="w") as file:
         file_content = csv.writer(file, delimiter="\t")
         file_content.writerow(header)
         file_content.writerows(data)
+
+
+def to_snake_case(string):
+    """Converts a string to snake case
+
+    Args:
+        string (str): A string.
+    """
+    # Convert whitespace and punctuation to underscore
+    regex_punc = re.compile(f"[{whitespace}{re.escape(punctuation)}]")
+    string = re.sub(regex_punc, "_", string)
+    
+    # Add underscore before capitalized letters
+    string = re.sub(r"(?<!^)(?=[A-Z])", "_", string)
+    
+    # Convert multiple underscores to one underscore
+    string = re.sub("_+", "_", string)
+    
+    # Lowercase everything
+    return(string.lower())
