@@ -2,6 +2,7 @@
 
 ## mipscripts (development version)
 
+- Print out per sample set summary information.
 - Throw error if sample sheet column names are duplicated
   ([#4](https://github.com/bailey-lab/mipscripts/issues/4)).
 - Fix check to see if FASTQ names are the duplicated. Previously, similar names
