@@ -148,11 +148,8 @@ def main(args):
     elif args[0] in subcommands.keys():
         globals()[args[0]](args[1:])
     else:
-        print(
-            "Unknown subcommand ("
-            + args[0]
-            + ") use -h for the list of subcommands!"
-        )
+        print(f"ERROR: Unknown subcommand '{args[0]}'")
+        print("\u2022 Use '-h' for a list of subcommands.")
         sys.exit(-1)
     sys.exit(0)
 
@@ -221,13 +218,13 @@ def seqrun_stats(args):
                 num_sample_sets.update({row["sample_set"]: 1})
 
         # Error if arguments are not correct
-        if not args.maingrp in header:
-            print("\nERROR: --maingrp invalid.")
+        if args.maingrp not in header:
+            print("ERROR: '--maingrp' invalid.")
             print(f"\u2022 User entered '{args.maingrp}'.")
             print(f"\u2022 Available options: {header}.")
             exit()
-        if args.subgrp and not args.subgrp in header:
-            print("\nERROR: --subgrp invaluid.")
+        if args.subgrp and args.subgrp not in header:
+            print("ERROR: '--subgrp' invaluid.")
             print(f"\u2022 User entered '{args.maingrp}'.")
             print(f"\u2022 Available options: {header}.")
             exit()
@@ -267,7 +264,7 @@ def seqrun_stats(args):
             if len(fqmatchs) > 1:
                 # Throw an error
                 print(
-                    "ERROR: More than one FASTQ for the sampleset rep.",
+                    "ERROR: More than one FASTQ for the sampleset repetition.",
                     fqmatchs,
                     fqname,
                 )
@@ -335,9 +332,9 @@ def seqrun_stats(args):
                 print(f"... QUANTILES for read pairs: {quantiles}")
 
 
-#######################################################################3
-#######################################################################3
-#######################################################################3
+#######################################################################
+#######################################################################
+#######################################################################
 shortDescText = "write fastqs from a mergedsheet.tsv after tsv has been created"
 longDescText = """This can be combined with --skipfastqwrite in the main merge_sampleset
 to allow for more complicated merges that might require further intermediate manipulation
@@ -387,20 +384,16 @@ def merge_sampleset_write_fastq(args):
     else:
         print(f"ERROR: bad directory name ({args.newfastqdir})")
         exit()
-    total_bad = 0
-    total = good = 0
+    # total_bad = 0
+    # total = good = 0
 
     with open(args.mergedsheet, newline="") as items_file:
         items_reader = csv.DictReader(items_file, delimiter="\t")
-        items_total = 0
+        # items_total = 0
         for item in items_reader:
             fastqs = item["fastq"].split(",")
-            name = (
-                item["sample_name"]
-                + "-"
-                + item["sample_set"]
-                + "-"
-                + item["replicate"]
+            name = "{}-{}-{}".format(
+                item["sample_name"], item["sample_set"], item["replicate"]
             )
             if not args.skipfastqwrite:
                 print("...", name, "...")
@@ -431,14 +424,14 @@ def merge_sampleset_write_fastq(args):
                 if args.skipbadfastqs:
                     print("WARN bad fasta paths for ", name, "(", fastqs, ")")
                 else:
-                    print("!ERROR!", name, fastqs)
-                    print("Skip bad fastqs with --skipbadfastqs")
+                    print("ERROR: Bad FASTQ", name, fastqs)
+                    print("\u2022 Skip bad FASTQs with '--skipbadfastqs'.")
                     exit(1)
 
 
-#######################################################################3
-#######################################################################3
-#######################################################################3
+#######################################################################
+#######################################################################
+#######################################################################
 shortDescText = (
     "merge a sampleset from multiple samplesheets and sequencing runs"
 )
@@ -511,7 +504,6 @@ def merge_sampleset(args):
         action="append",
         help="add unexpected column name",
     )
-
     aparser.add_argument(
         "--skipfastqwrite",
         action="store_true",
@@ -534,11 +526,11 @@ def merge_sampleset(args):
         help="collapse multiple replicates within a samplesheet (error)",
     )
 
-    ##TODO: set default mergedsheet and fastq directory to set_probe
+    # TODO: set default mergedsheet and fastq directory to set_probe
 
     args = aparser.parse_args(args=args)
     mergeonfields = args.mergeon.split("-")
-    if args.addcolumn == None:  # this should be handled by argparse but not!
+    if args.addcolumn is None:  # this should be handled by argparse but not!
         args.addcolumn = []
 
     # Convert header to snake case
@@ -593,7 +585,7 @@ def merge_sampleset(args):
                     # determine if we need to add another line to current header.
                     # print (item)
                     for name in item:
-                        if not name in header:
+                        if name not in header:
                             if (
                                 name in header_optional
                                 or name in args.addcolumn
@@ -601,13 +593,11 @@ def merge_sampleset(args):
                                 print("... ... NOTE: ", name, " added to data ")
                                 header.append(name)
                             else:
+                                print("ERROR: Improper column name.")
                                 print(
-                                    "!ERROR! ("
-                                    + name
-                                    + ") is not an proper column name.  use --addcolumn "
-                                    + name
-                                    + " to override."
+                                    f"\u2022 '{name}' is not a proper column name."
                                 )
+                                print("\u2022 Use '--addcolumn' to override.")
                                 exit(1)
 
                 items_total += 1
@@ -617,13 +607,9 @@ def merge_sampleset(args):
                     continue
                 # keep item with proper probeset and sampleset
                 items_kept += 1
-                startfastqname = (
-                    item["sample_name"]
-                    + "-"
-                    + item["sample_set"]
-                    + "-"
-                    + item["replicate"]
-                    + "_"
+
+                startfastqname = "{}-{}-{}_".format(
+                    item["sample_name"], item["sample_set"], item["replicate"]
                 )
                 item["samplelist"] = thefile
                 item["replicate_old"] = item["replicate"]
@@ -687,9 +673,10 @@ def merge_sampleset(args):
         # print (count, mkey, "records:",len(mergeset))
         mergeditem = None
         name = None
-        ### create a merge record from first one and add the others ###
+
+        # Create a merge record from first one and add the others
         for item in mergeset:
-            if mergeditem == None:
+            if mergeditem is None:
                 mergeditem = copy.deepcopy(item)
                 # make sure merged item has all the potential names from header
                 # set file name and replicated based on new name and sampleset#
@@ -705,7 +692,8 @@ def merge_sampleset(args):
                         mergeditem[f].append(item[f])
                     else:
                         mergeditem[f].append("NA")
-        ###collapse in mergeitem sampleset, name and mergeon and error if not the same
+
+        # Collapse in mergeitem sampleset, name and mergeon and error if not the same
         for f in ["sample_name", "sample_set", "mergeon"]:
             mergeditem[f] = list(set(mergeditem[f]))
             if len(mergeditem[f]) == 1:
@@ -715,7 +703,8 @@ def merge_sampleset(args):
                     "!ERROR! ", mergeditem[f], "for", f, " is not consistent!"
                 )
                 exit(1)
-        ### set the replicate #####
+
+        # Set the replicate
         name = mergeditem["sample_name"] + "-" + mergeditem["sample_set"]
         mergeditem["replicate_old"] = mergeditem["replicate"]
         mergeditem["replicate"] = mergeditem["replicate"][0]
@@ -734,7 +723,8 @@ def merge_sampleset(args):
                 exit(1)
             else:
                 replicate[name] = 1
-        ### collapse probesets ####
+
+        # Collapse probesets
         mergeditem["probe_set"] = ",".join(mergeditem["probe_set"]).split(",")
         mergeditem["probe_set"] = list(set(mergeditem["probe_set"]))
         mergeditem["probe_set"].sort()
@@ -743,17 +733,14 @@ def merge_sampleset(args):
     print("################")
     print("MERGE THE FASTQS...")
     for mergeditem in merged_samples:
-        ### merge the fastqs ##########
-        ### this is slowwwwwwwww ######
-        # print (mergeditem)
-        fastqname = (
-            mergeditem["sample_name"]
-            + "-"
-            + mergeditem["sample_set"]
-            + "-"
-            + mergeditem["replicate"]
+        # Merge the fastqs
+        # Note that this is slow
+        fastqname = "{}-{}-{}".format(
+            mergeditem["sample_name"],
+            mergeditem["sample_set"],
+            mergeditem["replicate"],
         )
-        writeoperator = " > "  ##initial write
+        writeoperator = " > "  # initial write
         for pair in mergeditem["fastq"]:
             if len(pair) == 0:
                 # print ("emptty value")
@@ -825,7 +812,7 @@ def merge_sampleset(args):
                 print(" could a R1 or R2 fastq file been deleted???")
                 exit(1)
             writeoperator = " >> "  # now appending
-        ### make fields non-redundant (always make probeset)
+        # Make fields non-redundant (always make probeset)
         mergeditem["fastq"] = [
             fq for sublist in mergeditem["fastq"] for fq in sublist
         ]
