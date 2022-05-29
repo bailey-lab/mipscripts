@@ -2,6 +2,7 @@
 
 ## mipscripts (development version)
 
+- Remove unused packages and modules.
 - Print out per sample set summary information.
 - Throw error if sample sheet column names are duplicated
   ([#4](https://github.com/bailey-lab/mipscripts/issues/4)).

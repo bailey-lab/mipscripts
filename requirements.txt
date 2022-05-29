@@ -13,8 +13,9 @@ idna==3.3
 importlib-metadata==4.11.3
 iniconfig==1.1.1
 keyring==23.5.0
-numpy==1.22.3
+numpy==1.22.4
 packaging==21.3
+pandas==1.4.2
 pep517==0.12.0
 pep8==1.7.1
 pkginfo==1.8.2
@@ -27,12 +28,13 @@ pytest==7.1.2
 pytest-cache==1.0
 pytest-flakes==4.0.5
 pytest-pep8==1.0.6
+python-dateutil==2.8.2
+pytz==2022.1
 readme-renderer==35.0
 requests==2.27.1
 requests-toolbelt==0.9.1
 rfc3986==2.0.0
 rich==12.4.1
-scipy==1.8.0
 six==1.16.0
 statistics==1.0.3.5
 tomli==2.0.1
