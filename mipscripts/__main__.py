@@ -378,16 +378,14 @@ def merge_sampleset_write_fastq(args):
         action="store_true",
         help="keep running and just skip bad fastas",
     )
-
     args = aparser.parse_args(args=args)
+
     print("CREATING and CLEANING NEW FASTQ DIR:", args.newfastqdir)
-    if len(args.newfastqdir) > 0:
-        os.system("mkdir " + args.newfastqdir)  # to lazy to check if it exists
-        os.system(
-            "rm  " + args.newfastqdir + "/*"
-        )  # too lazy to check if they exist
+    if len(args.newfastqdir) == 1:
+        os.system("mkdir " + args.newfastqdir)
+        os.system(f"rm {args.newfastqdir}/*")  # too lazy to check if exist
     else:
-        print("ERROR: bad directory name (" + args.newfastqdir + ")")
+        print(f"ERROR: bad directory name ({args.newfastqdir})")
         exit()
     total_bad = 0
     total = good = 0
@@ -557,7 +555,7 @@ def merge_sampleset(args):
     headers_to_rename = global_samples_tsv_oldnames  # don't modify
 
     print("CREATING and CLEANING NEW FASTQ DIR:", args.newfastqdir)
-    if len(args.newfastqdir) > 0:
+    if len(args.newfastqdir) == 1:
         os.system("mkdir " + args.newfastqdir)
         os.system(f"rm {args.newfastqdir}/*")  # too lazy to check if exist
     else:
