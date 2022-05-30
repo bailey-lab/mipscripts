@@ -1,6 +1,6 @@
 # Changelog
 
-## mipscripts (development version)
+## mipscripts 0.3.3
 
 - Remove unused packages and modules.
 - Print out per sample set summary information.

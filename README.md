@@ -21,7 +21,7 @@ package, followed by the subcommand:
 python3 -m mipscripts subcommand [options]
 ```
 
-## Developer
+## Developer Notes
 
 When developing mipscripts, we recommend the use of a virtual environment:
 
@@ -42,4 +42,12 @@ make sure to freeze the package versions before committing:
 
 ```shell
 pip freeze > requirements.txt
+```
+
+After adding any new code, we encourage writing unit tests to test
+functionality. mipscripts is tested via the [pytest
+framework](https://docs.pytest.org/en/7.1.x/). To test the code, run:
+
+```shell
+python3 -m pytest
 ```
