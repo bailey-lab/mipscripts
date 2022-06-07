@@ -49,8 +49,35 @@ def merge_sampleset(
     collapse,
     ignorereplicateredundancy,
 ):
-    """commandline routine to merge sequencing runs and mip captures for one or a few samplesets and probesets.
-    NOTE:  best used for a singular probe_set and sample_set. Can create large fastq sets that are slow to run.
+    """Flexibly merges sample sets together into one merged sample sheet.
+
+    Merge multiple sample sheets together, selecting the sample sets and probes 
+    of interest. The user may also create more advanced merges by specifying
+    samples matching a pattern or selecting other fields to merge on. In some
+    cases, it may be useful to edit the merged sample sheet before combining
+    FASTQ files together. To do so, the user may opt to skip the creating of 
+    FASTQ files and later run `merged_sampleset_write_fastq`.
+
+    Args: 
+        set (str): The sample sets to aggregate in the merge.
+        probe (str): The probe sets to include in the merge.
+        sheet (str): The path to the sample sheets that will be merged.
+        mergeon (str): The fields to merge on. Fields should be separated by a
+            dash.
+        newsheet (str): The path to the new merged sample sheet.
+        newfastqdir (str): The path to the new FASTQ directory.
+        exclude (str): Exclude samples matching a text pattern.
+        addcolumn (str): An unexpected column name to be added.
+        skipfastqwrite (bool): Whether to skip the writing of new FASTQs. This
+            is equivalent to a dry run. By setting this variable to `True`, the
+            user has more flexibility in merging FASTQs. The user may use
+            `merge_sampleset_write_fastq` following editing of the resulting
+            sample sheet.
+        renamereplicates (bool): Whether to renumber the replicates based on 
+            order.
+        collapse (bool): Whether to collapse to unique values in columns.
+        ignorereplicateredundancy (bool): Whether to collapse multiple 
+            replicates within a sample sheet.
     """
 
     # TODO: set default mergedsheet and fastq directory to set_probe

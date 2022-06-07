@@ -11,7 +11,18 @@ import statistics
 
 
 def seqrun_stats(samplesheet, maingrp, subgrp):
-    """Computes performance statistics for a sequencing run."""
+    """Computes performance statistics for a sequencing run.
+
+    Reads the R1 FASTQ files that correspond to a sample sheet and counts the 
+    number of reads for each sample. Prints summary statistics on the number
+    of reads and creates a new sample sheet file that contains the original
+    data and a new column `read_count` with the number of reads per sample.
+
+    Args:
+        samplesheet (list): A list of paths to sample sheets.
+        maingrp (str): The primary grouping for the data.
+        subgrp (str): A secondary grouping for the data.
+    """
 
     for sheet in samplesheet:
         # Convert header to snake case
@@ -41,7 +52,7 @@ def seqrun_stats(samplesheet, maingrp, subgrp):
             print(f"\u2022 Available options: {header}.")
             exit()
         if subgrp and subgrp not in header:
-            print("ERROR: '--subgrp' invaluid.")
+            print("ERROR: '--subgrp' invalid.")
             print(f"\u2022 User entered '{maingrp}'.")
             print(f"\u2022 Available options: {header}.")
             exit()
