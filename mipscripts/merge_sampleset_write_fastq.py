@@ -1,3 +1,4 @@
+from mipscripts import utils
 import csv
 import os
 
@@ -24,14 +25,8 @@ def merge_sampleset_write_fastq(
         skipbadfastqs (bool): A boolean indicating whether to skip bad FASTQs
             without throwing errors.
     """
-    print("CREATING and CLEANING NEW FASTQ DIR:", newfastqdir)
-    print(newfastqdir)
-    if len(newfastqdir) == 1:
-        os.system("mkdir " + newfastqdir)
-        os.system(f"rm {newfastqdir}/*")  # too lazy to check if exist
-    else:
-        print(f"ERROR: bad directory name ({newfastqdir})")
-        exit()
+    print(f"CREATING NEW FASTQ DIRECTORY: `{newfastqdir}`")
+    utils.make_dir(newfastqdir)
     # total_bad = 0
     # total = good = 0
 

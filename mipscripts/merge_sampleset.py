@@ -98,14 +98,9 @@ def merge_sampleset(
     ]  # copy, don't modify
     headers_to_rename = global_samples_tsv_oldnames  # don't modify
 
-    print("CREATING and CLEANING NEW FASTQ DIR:", newfastqdir)
-    if len(newfastqdir) == 1:
-        os.system("mkdir " + newfastqdir)
-        os.system(f"rm {newfastqdir}/*")  # too lazy to check if exist
-    else:
-        print(f"ERROR: bad directory name ({newfastqdir})")
-        exit()
-
+    print(f"CREATING NEW FASTQ DIRECTORY: `{newfastqdir}`")
+    utils.make_dir(newfastqdir)
+        
     print("PROCESSING SAMPLE SHEETS...")
     for thefile in sheet:
         print(f"LOADING FASTQ DIR {thefile} ...")

@@ -55,3 +55,20 @@ def to_snake_case(string):
 
     # Lowercase everything
     return string.lower()
+
+
+def make_dir(dir):
+    """Checks if a directory can be made and creates it.
+
+    Args:
+        dir (str): Path to the directory.
+    """
+    if os.path.isdir(dir):
+        print(f"ERROR: Directory `{dir}` already exists.")
+        print("\u2022 Consider deleting the contents of the directory.")
+        exit()
+    elif not isinstance(dir, str) or not dir:
+        print(f"ERROR: Bad directory name of `{dir}`.")
+        exit()
+    else:
+        os.system("mkdir " + dir)

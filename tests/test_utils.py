@@ -78,3 +78,17 @@ def test_duplicate_cols(tmp_path):
     # Convert header to snake case
     with pytest.raises(SystemExit):
         utils.header_to_snake_case(tmp_file, overwrite=True)
+
+
+def test_valid_dir(tmpdir):
+    # Directory already exists
+    with pytest.raises(SystemExit):
+        utils.make_dir(tmpdir)
+
+    # Non string path
+    with pytest.raises(SystemExit):
+        utils.make_dir(10)
+
+    # Empty path
+    with pytest.raises(SystemExit):
+        utils.make_dir("")
