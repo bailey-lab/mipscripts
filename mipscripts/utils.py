@@ -43,9 +43,19 @@ def to_snake_case(string):
     Args:
         string (str): A string.
     """
+    # Define whitespace and punctuation regex string
+    space_punc = f"[{whitespace}{re.escape(punctuation)}]"
+    
+    # Remove underscore from search string
+    space_punc = re.sub("_", "", space_punc)
+    regex_space_punc = re.compile(space_punc)
+
+    # Warn user that string is being converted to snake case
+    if re.search(regex_space_punc, string) or re.search("[A-Z]", string):
+        print(f"Converting `{string}` to snake case.")
+    
     # Convert whitespace and punctuation to underscore
-    regex_punc = re.compile(f"[{whitespace}{re.escape(punctuation)}]")
-    string = re.sub(regex_punc, "_", string)
+    string = re.sub(regex_space_punc, "_", string)
 
     # Add underscore before capitalized letters
     string = re.sub(r"(?<!^)(?=[A-Z])", "_", string)

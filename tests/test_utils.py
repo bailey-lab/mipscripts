@@ -12,6 +12,13 @@ def test_to_snake_case():
     assert utils.to_snake_case("sample\nSet") == "sample_set"
 
 
+# Check printed message when converting
+def test_to_snake_case_print(capfd):
+    utils.to_snake_case("Convert")
+    out, err = capfd.readouterr()
+    assert out == "Converting `Convert` to snake case.\n"
+
+
 def test_header_to_snake_case(tmp_path):
     tmp_dir = tmp_path / "header"
     tmp_dir.mkdir()
