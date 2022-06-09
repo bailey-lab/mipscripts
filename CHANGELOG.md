@@ -1,5 +1,11 @@
 # Changelog
 
+## mipscripts (development version)
+
+- Add tests for the subcommands.
+- Improve documentation and docstrings.
+- Use `argparse` to handle subcommands.
+
 ## mipscripts 0.3.3
 
 - Remove unused packages and modules.
