@@ -67,18 +67,23 @@ def to_snake_case(string):
     return string.lower()
 
 
-def make_dir(dir):
+def make_dir(dir, overwrite=True):
     """Checks if a directory can be made and creates it.
 
     Args:
         dir (str): Path to the directory.
+        overwrite (bool): A boolean indicating whether to overwrite an existing
+            directory.
     """
-    if os.path.isdir(dir):
-        print(f"ERROR: Directory `{dir}` already exists.")
-        print("\u2022 Consider deleting the contents of the directory.")
-        exit()
-    elif not isinstance(dir, str) or not dir:
+    if not isinstance(dir, str) or not dir:
         print(f"ERROR: Bad directory name of `{dir}`.")
         exit()
+    elif os.path.isdir(dir) and not overwrite:
+        print(f"ERROR: Directory `{dir}` already exists.")
+        print("\u2022 Consider deleting the directory or renaming it.")
+        exit()
+    elif os.path.isdir(dir) and overwrite:
+        os.system("rm -r " + dir)
+        os.system("mkdir " + dir)
     else:
         os.system("mkdir " + dir)

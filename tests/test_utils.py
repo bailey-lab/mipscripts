@@ -90,7 +90,7 @@ def test_duplicate_cols(tmp_path):
 def test_valid_dir(tmpdir):
     # Directory already exists
     with pytest.raises(SystemExit):
-        utils.make_dir(tmpdir)
+        utils.make_dir(tmpdir, overwrite=False)
 
     # Non string path
     with pytest.raises(SystemExit):
