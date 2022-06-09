@@ -1,4 +1,4 @@
-from .utils import *
+from mipscripts import utils
 import copy
 import csv
 import os
@@ -51,14 +51,14 @@ def merge_sampleset(
 ):
     """Flexibly merges sample sets together into one merged sample sheet.
 
-    Merge multiple sample sheets together, selecting the sample sets and probes 
+    Merge multiple sample sheets together, selecting the sample sets and probes
     of interest. The user may also create more advanced merges by specifying
     samples matching a pattern or selecting other fields to merge on. In some
     cases, it may be useful to edit the merged sample sheet before combining
-    FASTQ files together. To do so, the user may opt to skip the creating of 
+    FASTQ files together. To do so, the user may opt to skip the creating of
     FASTQ files and later run `merged_sampleset_write_fastq`.
 
-    Args: 
+    Args:
         set (str): The sample sets to aggregate in the merge.
         probe (str): The probe sets to include in the merge.
         sheet (str): The path to the sample sheets that will be merged.
@@ -73,10 +73,10 @@ def merge_sampleset(
             user has more flexibility in merging FASTQs. The user may use
             `merge_sampleset_write_fastq` following editing of the resulting
             sample sheet.
-        renamereplicates (bool): Whether to renumber the replicates based on 
+        renamereplicates (bool): Whether to renumber the replicates based on
             order.
         collapse (bool): Whether to collapse to unique values in columns.
-        ignorereplicateredundancy (bool): Whether to collapse multiple 
+        ignorereplicateredundancy (bool): Whether to collapse multiple
             replicates within a sample sheet.
     """
 
@@ -87,7 +87,7 @@ def merge_sampleset(
 
     # Convert header to snake case
     for f in sheet:
-        header_to_snake_case(path=f, overwrite=True)
+        utils.header_to_snake_case(path=f, overwrite=True)
 
     total_samples = []
     merged = {}

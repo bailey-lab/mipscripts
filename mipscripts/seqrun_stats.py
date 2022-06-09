@@ -1,5 +1,5 @@
-from .utils import *
 from alive_progress import alive_it
+from mipscripts import utils
 import collections
 import csv
 import gzip
@@ -26,7 +26,7 @@ def seqrun_stats(samplesheet, maingrp, subgrp):
 
     for sheet in samplesheet:
         # Convert header to snake case
-        header_to_snake_case(path=sheet, overwrite=True)
+        utils.header_to_snake_case(path=sheet, overwrite=True)
 
         # Initialize a counter for the number of sample sets
         num_sample_sets = collections.Counter()
