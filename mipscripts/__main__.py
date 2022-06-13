@@ -27,17 +27,20 @@ parser_seqrun = subparsers.add_parser(
     formatter_class=argparse.ArgumentDefaultsHelpFormatter,
 )
 parser_seqrun.add_argument(
+    "-s",
     "--samplesheet",
     action="append",
     required=True,
     help="sample sheet to run on",
 )
 parser_seqrun.add_argument(
+    "-g",
     "--maingrp",
     default="sample_set",
     help="main grouping for stats",
 )
 parser_seqrun.add_argument(
+    "-u",
     "--subgrp",
     help="sub grouping for stats",
 )
@@ -51,21 +54,25 @@ parser_fastq = subparsers.add_parser(
     formatter_class=argparse.ArgumentDefaultsHelpFormatter,
 )
 parser_fastq.add_argument(
+    "-s",
     "--mergedsheet",
     required=True,
     help="merged sample sheet file paths",
 )
 parser_fastq.add_argument(
+    "-d",
     "--newfastqdir",
     default="mergedfastq",
     help="name of the new FASTQ directory",
 )
 parser_fastq.add_argument(
+    "-n",
     "--skipfastqwrite",
     action="store_true",
     help="skip the writing of FASTQ files. This is equivalent to a dry run.",
 )
 parser_fastq.add_argument(
+    "-b",
     "--skipbadfastqs",
     action="store_true",
     help="skip bad FASTQs without throwing errors",
@@ -84,63 +91,75 @@ parser_merge = subparsers.add_parser(
     help="flexibly merge sample sets together",
 )
 parser_merge.add_argument(
+    "-S",
     "--set",
     action="append",
     required=True,
     help="sample set to aggregate",
 )
 parser_merge.add_argument(
+    "-p",
     "--probe",
     action="append",
     required=True,
     help="probe sets to include in merge",
 )
 parser_merge.add_argument(
+    "-s",
     "--sheet",
     action="append",
     help="sample sheet file paths (dir fastq must be in same dir as sheet)",
 )
 parser_merge.add_argument(
+    "-o",
     "--mergeon",
     help="fields to merge on",
     default="sample_name-sample_set-replicate",
 )
 parser_merge.add_argument(
+    "-m",
     "--newsheet",
     help="name of new merged sample sheet",
     default="mergedsheet.tsv",
 )
 parser_merge.add_argument(
+    "-d",
     "--newfastqdir",
     help="name of new FASTQ directory",
     default="mergedfastq",
 )
 parser_merge.add_argument(
+    "-e",
     "--exclude",
     action="append",
     help="exclude (samples) matching text pattern",
 )
 parser_merge.add_argument(
+    "-a",
     "--addcolumn",
     action="append",
     help="add unexpected column name",
 )
 parser_merge.add_argument(
+    "-n",
     "--skipfastqwrite",
     action="store_true",
     help="dry run skips FASTQ merge/write but makes tsv",
 )
 parser_merge.add_argument(
+    "-r",
     "--renamereplicates",
     action="store_true",
     help="renumber the replicates based on order",
 )
 parser_merge.add_argument(
+    "-c",
     "--collapse",
     action="store_true",
     help="collapse to unique values in columns (not needed for downstream miptools)",
 )
 parser_merge.add_argument(
+    "-i",
     "--ignorereplicateredundancy",
     action="store_true",
     help="collapse multiple replicates within a samplesheet (error)",
