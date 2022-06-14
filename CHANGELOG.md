@@ -2,6 +2,9 @@
 
 ## mipscripts (development version)
 
+- Add short options to the CLI.
+- Warn user when converting to snake case.
+- Add a function to create a directory.
 - Add tests for the subcommands.
 - Improve documentation and docstrings.
 - Use `argparse` to handle subcommands.
