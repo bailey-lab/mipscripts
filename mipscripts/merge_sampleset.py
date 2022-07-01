@@ -106,7 +106,7 @@ def merge_sampleset(
         print(f"LOADING FASTQ DIR {thefile} ...")
         print(header)
 
-        fastqdir = os.path.dirname(thefile) + "/fastq"
+        fastqdir = os.path.join(os.path.dirname(thefile), "fastq")
         fastqs = os.listdir(fastqdir)
         fastqs = [f for f in fastqs if any(s in f for s in set)]
         # print ( "...   ",  len(fastqs)    , " fastqs in associated directory" )

@@ -58,7 +58,7 @@ def seqrun_stats(samplesheet, maingrp, subgrp):
             exit()
 
         print("####################### FASTQS / READS ########################")
-        fastqdir = os.path.dirname(sheet) + "/fastq"
+        fastqdir = os.path.join(os.path.dirname(sheet), "fastq")
         fastqs = os.listdir(fastqdir)
         fqss = [f for f in fastqs if "_R1_" in f]
 
@@ -149,7 +149,7 @@ def seqrun_stats(samplesheet, maingrp, subgrp):
 
             # Print summary stats
             print(f"... TOTAL read pairs: {sum(reads):,}")
-            print(f"... MEAN read pairs: {int(statistics.mean(reads)):,}")
+            print(f"... MEAN read pairs: {statistics.mean(reads):,}")
             print(f"... MEDIAN read pairs: {statistics.median(reads):,}")
 
             # Deciles

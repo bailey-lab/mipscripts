@@ -2,6 +2,9 @@
 
 ## mipscripts (development version)
 
+- Improve searching for files. Previously, users would need to provide the
+  complete path to input files or file searching would fail. This is no longer
+  the case and relative paths may now be input.
 - Add short options to the CLI.
 - Warn user when converting to snake case.
 - Add a function to create a directory.
