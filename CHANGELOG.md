@@ -1,6 +1,6 @@
 # Changelog
 
-## mipscripts (development version)
+## mipscripts 0.3.4
 
 - Improve searching for files. Previously, users would need to provide the
   complete path to input files or file searching would fail. This is no longer

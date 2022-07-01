@@ -1,4 +1,4 @@
-__version__ = "v0.3.3.9000"
+__version__ = "v0.3.4"
 
 import argparse
 from .seqrun_stats import seqrun_stats
