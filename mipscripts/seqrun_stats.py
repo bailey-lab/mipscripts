@@ -139,7 +139,7 @@ def seqrun_stats(samplesheet, maingrp, subgrp):
         read_cnt_data = pd.read_csv(read_cnt_path, sep="\t")
         for key in num_sample_sets:
             # Print sample set name and number of samples
-            print(f"Sample set {key} ({num_sample_sets[key]:,} samples):")
+            print(f"\n\nSample set {key} ({num_sample_sets[key]:,} samples):")
 
             # Filter data to sample set and isolate reads
             filter_data = read_cnt_data[read_cnt_data.sample_set == key]
