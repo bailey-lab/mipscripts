@@ -7,7 +7,6 @@ import os
 import os.path
 import pandas as pd
 import re
-import statistics
 
 
 def seqrun_stats(samplesheet, maingrp, subgrp):
@@ -148,13 +147,10 @@ def seqrun_stats(samplesheet, maingrp, subgrp):
             reads = filter_data.read_count
 
             # Print summary stats
-            print(f"... TOTAL read pairs: {sum(reads):,}")
-            print(f"... MEAN read pairs: {statistics.mean(reads):,}")
-            print(f"... MEDIAN read pairs: {statistics.median(reads):,}")
-
+            print(f"... TOTAL read pairs: {reads.sum()}")
+            print(f"... MEAN read pairs: {reads.mean()}")
+            print(f"... MEDIAN read pairs: {reads.median()}")
+            
             # Deciles
-            if num_samples > 1:
-                quantiles = [
-                    f"{round(q):,}" for q in statistics.quantiles(reads)
-                ]
-                print(f"... QUANTILES for read pairs: {quantiles}")
+            if num_samples>1:
+                print(f'... QUANTILES for read pairs:\n{reads.quantile([0.25, 0.5, 0.75])}')
